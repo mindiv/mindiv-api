@@ -50,7 +50,7 @@ app.get('/', (req: express.Request, res: express.Response) => {
 
 server.listen(port, () => {
   routes.forEach((route: CommonRoutesConfig) => {
-    debugLog(`Rouets configured for ${route.getName()}`);
+    debugLog(`Routes configured for ${route.getName()}`);
   });
   // only exception to avoid console.log()
   console.log(runningMessage);
