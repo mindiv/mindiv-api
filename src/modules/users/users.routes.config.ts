@@ -24,6 +24,8 @@ export class UsersRoutes extends CommonRoutesConfig {
         UsersController.listUsers
       )
       .post(
+        body('firstName').isString(),
+        body('lastName').isString(),
         body('email').isEmail(),
         body('password')
           .isLength({ min: 5 })

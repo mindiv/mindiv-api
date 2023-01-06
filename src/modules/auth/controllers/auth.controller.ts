@@ -7,7 +7,7 @@ const log: debug.IDebugger = debug('app:auth-controller');
 
 // @ts-expect-error
 const jwtSecret: string = process.env.JWT_SECRET;
-const tokenExpirationInSeconds = 36000;
+const tokenExpirationInSeconds = 36000000;
 
 class AuthController {
   async createJWT(

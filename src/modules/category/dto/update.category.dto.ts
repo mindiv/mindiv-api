@@ -1,6 +1,6 @@
-export interface CreateCategoryDto {
+export interface UpdateCategoryDto {
   name: string;
   description: string;
-  cover: string;
   slug?: string;
+  cover: string;
 }

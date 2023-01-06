@@ -26,6 +26,7 @@
     "mongoose": "^6.8.2",
     "rimraf": "^3.0.2",
     "shortid": "^2.2.16",
+    "slugify": "^1.6.5",
     "winston": "^3.8.2"
   },
   "devDependencies": {

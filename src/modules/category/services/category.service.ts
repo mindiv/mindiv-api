@@ -1,13 +1,26 @@
 import CategoryDao from '../daos/category.dao';
 import { CreateCategoryDto } from '../dto/create.category.dto';
+import { UpdateCategoryDto } from '../dto/update.category.dto';
 
 class CategoryService {
-  async create(resource: CreateCategoryDto) {
-    return CategoryDao.createCategory(resource);
+  async create(userId: string, resource: CreateCategoryDto) {
+    return CategoryDao.createCategory(userId, resource);
   }
 
   async list(limit: number, page: number) {
     return CategoryDao.getCategories(limit, page);
+  }
+
+  async update(categoryId: string, categoryFields: UpdateCategoryDto) {
+    return CategoryDao.updateCategory(categoryId, categoryFields);
+  }
+
+  async readByIdOrSlug(categoryIdOrSlug: string) {
+    return CategoryDao.getCategory(categoryIdOrSlug);
+  }
+
+  async delete(categoryId: string) {
+    return CategoryDao.removeCategory(categoryId);
   }
 }
 
