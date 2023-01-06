@@ -6,7 +6,7 @@ import shortid from 'shortid';
 import debug from 'debug';
 import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
-const log: debug.IDebugger = debug('app:in-memory-dao');
+const log: debug.IDebugger = debug('app:user-dao');
 
 class UsersDao {
   users: Array<CreateUserDto> = [];

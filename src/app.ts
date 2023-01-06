@@ -11,9 +11,11 @@ import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import debug from 'debug';
+import helmet from 'helmet';
 import { CommonRoutesConfig } from './modules/common/common.routes.config';
 import { UsersRoutes } from './modules/users/users.routes.config';
 import { AuthRoutes } from './modules/auth/auth.routes.config';
+import { CategoryRoutes } from './modules/category/category.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -21,11 +23,10 @@ const port = 8000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
 
-// here we are adding middleware to parse all incoming requests as JSON
+// middlewares
 app.use(express.json());
-
-// here we are adding middleware to allow cross-origin requests
 app.use(cors());
+app.use(helmet());
 
 // here we are preparing the expressWinston logging middleware configuration,
 // which will automatically log all HTTP requests handled by Express.js
@@ -49,6 +50,7 @@ app.use(expressWinston.logger(loggerOptions));
 // after sending the Express.js application object to have the routes added to our app!
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
+routes.push(new CategoryRoutes(app));
 
 // this is a simple route to mae sure everything is working properly
 const runningMessage = `Server running at http://localhost:${port}`;
