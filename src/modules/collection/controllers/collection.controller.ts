@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { response } from 'express';
 import collectionService from '../services/collection.service';
 import debug from 'debug';
+import { respond, ResponseCode } from '../../../utilities/response/response';
 
 const log: debug.IDebugger = debug('app:collection-controller');
 
@@ -13,18 +14,24 @@ class CollectionController {
       categoryId,
       req.body
     );
-    res.status(201).send({
-      response_message: 'Collection created successfully',
-      data: collection,
-    });
+    const message = 'Collection created successfully';
+    respond(res, collection, message, ResponseCode.NO_CONTENT);
   }
 
   async getAllCollections(req: express.Request, res: express.Response) {
     const collections = await collectionService.list(100, 0);
-    res.status(200).send({
-      response_message: 'All collections',
-      data: collections,
-    });
+    respond(res, collections);
+  }
+
+  async getCollectionsByCategory(req: express.Request, res: express.Response) {
+    const categoryIdOrSlug = req.params.categoryIdOrSlug;
+    const collections = await collectionService.listByCategory(
+      categoryIdOrSlug,
+      100,
+      0
+    );
+    const message = 'Collections by category retrieved successfully';
+    respond(res, collections, message);
   }
 
   async getOneCollection(req: express.Request, res: express.Response) {
@@ -32,10 +39,15 @@ class CollectionController {
     const collection = await collectionService.readByIdOrSlug(
       collectionIdOrSlug
     );
-    res.status(200).send({
-      response_message: 'Collection fetched',
-      data: collection,
-    });
+    const message = 'Collection retrieved';
+    respond(res, collection, message);
+  }
+
+  async deleteCollection(req: express.Request, res: express.Response) {
+    const collecionId = req.params.collectionIdOrSlug;
+    const collection = await collectionService.remove(collecionId);
+    const message = 'Collection deleted';
+    respond(res, collection, message);
   }
 }
 

@@ -1,6 +1,8 @@
-import expresss from 'express';
+import expresss, { response } from 'express';
 import categoryService from '../services/category.service';
 import debug from 'debug';
+import generateSlug from '../../../utilities/generateSlug';
+import { respond, ResponseCode } from '../../../utilities/response/response';
 
 const log: debug.IDebugger = debug('app:category-middleware');
 
@@ -32,10 +34,21 @@ class CategoryMiddleware {
       res.locals.category = category;
       next();
     } else {
-      res.status(404).send({
-        response_message: 'No category found',
-        data: {},
-      });
+      respond(res, {}, 'No category found', ResponseCode.NOT_FOUND);
+    }
+  }
+
+  async validateSameCategoryDoesntExist(
+    req: expresss.Request,
+    res: expresss.Response,
+    next: expresss.NextFunction
+  ) {
+    const slug = generateSlug(req.body.name);
+    const category = await categoryService.readByIdOrSlug(slug);
+    if (category) {
+      respond(res, {}, 'Category already exists', ResponseCode.BAD_REQUEST);
+    } else {
+      next();
     }
   }
 }

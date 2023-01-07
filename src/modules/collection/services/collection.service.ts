@@ -14,8 +14,32 @@ class CollectionService {
     return CollectionDao.getAllCollections(limit, page);
   }
 
+  async listByCategory(
+    collectionIdOrSlug: string,
+    limit: number,
+    page: number
+  ) {
+    return CollectionDao.getCollectionsByCategory(
+      collectionIdOrSlug,
+      limit,
+      page
+    );
+  }
+
+  async readById(collectionId: string) {
+    return CollectionDao.getCollectionById(collectionId);
+  }
+
+  async readyBySlug(collectionSlug: string) {
+    return CollectionDao.getCollectionBySlug(collectionSlug);
+  }
+
   async readByIdOrSlug(collectionIdOrSlug: string) {
     return CollectionDao.getOneCollection(collectionIdOrSlug);
+  }
+
+  async remove(collectionId: string) {
+    return CollectionDao.deleteCollection(collectionId);
   }
 }
 

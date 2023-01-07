@@ -2,6 +2,7 @@ import mongooseService from '../../common/services/mongoose.service';
 import debug from 'debug';
 import generateSlug from '../../../utilities/generateSlug';
 import { CreateCollectionDto } from '../dto/create.collection.dto';
+import categoryService from '../../category/services/category.service';
 
 const log: debug.IDebugger = debug('app:collection-dao');
 
@@ -13,7 +14,7 @@ class CollectionDao {
     description: String,
     cover: String,
     slug: String,
-    user: { type: this.Schema.Types.ObjectId, ref: 'users' },
+    user: { type: this.Schema.Types.ObjectId, ref: 'User' },
     category: { type: this.Schema.Types.ObjectId, ref: 'Category' },
   });
 
@@ -62,10 +63,51 @@ class CollectionDao {
     }
   }
 
+  // get collection by id
+  async getCollectionById(collecionId: string) {
+    return this.Collection.findOne({ _id: collecionId }).exec();
+  }
+
+  // Get collection by slug
+  async getCollectionBySlug(collectionSlug: string) {
+    return this.Collection.findOne({ slug: collectionSlug });
+  }
+
   // Get collections by category
-  async getCollectionsByCategory(categoryId: string) {
-    const collections = await this.Collection.find({ category: categoryId });
+  async getCollectionsByCategory(
+    categoryIdOrSlug: string,
+    limit = 25,
+    page = 0
+  ) {
+    const category: any = await categoryService.readByIdOrSlug(
+      categoryIdOrSlug
+    );
+    const collections = await this.Collection.find({ category: category._id })
+      .limit(limit)
+      .skip(limit * page)
+      .populate('category user')
+      .exec();
     return collections;
+  }
+
+  // Update collection
+  async updateCollection(collectionId: string, collectionFields: any) {
+    try {
+      const slug = generateSlug(collectionFields.name);
+      const existingCollection = await this.Collection.findOneAndUpdate(
+        { _id: collectionId },
+        { $set: { ...collectionFields, slug } },
+        { new: true }
+      ).exec();
+      return existingCollection;
+    } catch (error) {
+      console.log('Error');
+    }
+  }
+
+  // Delete collection
+  async deleteCollection(collectionId: string) {
+    return this.Collection.deleteOne({ _id: collectionId }).exec();
   }
 }
 

@@ -12,7 +12,7 @@ export class AuthRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application {
-    this.app.post(`/auth`, [
+    this.app.post(`/api/auth`, [
       body('email').isEmail(),
       body('password').isString(),
       BodyValidationMiddleware.verifyBodyFieldsError,
@@ -20,7 +20,7 @@ export class AuthRoutes extends CommonRoutesConfig {
       authController.createJWT,
     ]);
 
-    this.app.post(`/auth/refresh-token`, [
+    this.app.post(`/api/auth/refresh-token`, [
       jwtMiddleware.validJWTNeeded,
       jwtMiddleware.verifyRefreshBodyField,
       jwtMiddleware.validRefreshNeeded,

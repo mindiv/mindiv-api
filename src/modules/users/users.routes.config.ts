@@ -15,7 +15,7 @@ export class UsersRoutes extends CommonRoutesConfig {
 
   configureRoutes(): express.Application {
     this.app
-      .route(`/users`)
+      .route(`/api/users`)
       .get(
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
@@ -38,7 +38,7 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app.param(`userId`, UsersMiddleware.extractUserId);
 
     this.app
-      .route(`/users/:userId`)
+      .route(`/api/users/:userId`)
       .all(
         UsersMiddleware.validateUserExists,
         jwtMiddleware.validJWTNeeded,
