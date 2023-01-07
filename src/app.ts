@@ -16,6 +16,7 @@ import { CommonRoutesConfig } from './modules/common/common.routes.config';
 import { UsersRoutes } from './modules/users/users.routes.config';
 import { AuthRoutes } from './modules/auth/auth.routes.config';
 import { CategoryRoutes } from './modules/category/category.routes.config';
+import { CollectionRoutes } from './modules/collection/collection.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -48,9 +49,10 @@ app.use(expressWinston.logger(loggerOptions));
 
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
-routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
+routes.push(new UsersRoutes(app));
 routes.push(new CategoryRoutes(app));
+routes.push(new CollectionRoutes(app));
 
 // this is a simple route to mae sure everything is working properly
 const runningMessage = `Server running at http://localhost:${port}`;

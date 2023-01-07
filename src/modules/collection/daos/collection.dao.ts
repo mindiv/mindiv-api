@@ -25,6 +25,7 @@ class CollectionDao {
     log('Created new instance of CollectionDao');
   }
 
+  // Create collection
   async createCollection(
     userId: string,
     categoryId: string,
@@ -39,6 +40,32 @@ class CollectionDao {
     });
     await collection.save();
     return collection;
+  }
+
+  // Get all collections
+  async getAllCollections(limit = 25, page = 0) {
+    return this.Collection.find()
+      .limit(limit)
+      .skip(limit * page)
+      .exec();
+  }
+
+  // Get one collection
+  async getOneCollection(collectionIdOrSlug: string) {
+    // check if idOrSlug is a valid MonogoDB ObjectId
+    if (
+      mongooseService.getMongoose().Types.ObjectId.isValid(collectionIdOrSlug)
+    ) {
+      return this.Collection.findOne({ _id: collectionIdOrSlug }).exec();
+    } else {
+      return this.Collection.findOne({ slug: collectionIdOrSlug }).exec();
+    }
+  }
+
+  // Get collections by category
+  async getCollectionsByCategory(categoryId: string) {
+    const collections = await this.Collection.find({ category: categoryId });
+    return collections;
   }
 }
 
