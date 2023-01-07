@@ -58,21 +58,29 @@ class CategoryDao {
   }
 
   async updateCategory(categoryId: string, categoryFields: UpdateCategoryDto) {
-    const slug = slugify(categoryFields.name, {
-      remove: undefined,
-      lower: true,
-    });
-    const existingCategory = await this.Category.findOneAndUpdate(
-      { _id: categoryId },
-      { $set: { ...categoryFields, slug } },
-      { new: true }
-    ).exec();
+    try {
+      const slug = slugify(categoryFields.name, {
+        remove: undefined,
+        lower: true,
+      });
+      const existingCategory = await this.Category.findOneAndUpdate(
+        { _id: categoryId },
+        { $set: { ...categoryFields, slug } },
+        { new: true }
+      ).exec();
 
-    return existingCategory;
+      return existingCategory;
+    } catch (error) {
+      console.log('Error');
+    }
   }
 
   async removeCategory(categoryId: string) {
-    return this.Category.deleteOne({ _id: categoryId }).exec();
+    try {
+      return this.Category.deleteOne({ _id: categoryId }).exec();
+    } catch (error) {
+      console.log('Error');
+    }
   }
 }
 
