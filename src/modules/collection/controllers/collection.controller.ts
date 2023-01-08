@@ -19,7 +19,7 @@ class CollectionController {
   }
 
   async getAllCollections(req: express.Request, res: express.Response) {
-    const collections = await collectionService.list(100, 0);
+    const collections = await collectionService.list();
     respond(res, collections);
   }
 
@@ -47,6 +47,13 @@ class CollectionController {
     const collecionId = req.params.collectionIdOrSlug;
     const collection = await collectionService.remove(collecionId);
     const message = 'Collection deleted';
+    respond(res, collection, message);
+  }
+
+  async updateCollection(req: express.Request, res: express.Response) {
+    const collectionId = req.params.collectionIdOrSlug;
+    const collection = await collectionService.update(collectionId, req.body);
+    const message = 'Collection updated';
     respond(res, collection, message);
   }
 }

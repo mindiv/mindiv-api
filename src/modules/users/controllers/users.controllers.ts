@@ -8,7 +8,7 @@ const log: debug.IDebugger = debug('app:users-controller');
 
 class UsersController {
   async listUsers(req: express.Request, res: express.Response) {
-    const users = await usersService.list(100, 0);
+    const users = await usersService.list();
     respond(res, users);
   }
 

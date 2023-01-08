@@ -44,11 +44,8 @@ class CollectionDao {
   }
 
   // Get all collections
-  async getAllCollections(limit = 25, page = 0) {
-    return this.Collection.find()
-      .limit(limit)
-      .skip(limit * page)
-      .exec();
+  async getAllCollections() {
+    return this.Collection.find().exec();
   }
 
   // Get one collection
@@ -61,16 +58,6 @@ class CollectionDao {
     } else {
       return this.Collection.findOne({ slug: collectionIdOrSlug }).exec();
     }
-  }
-
-  // get collection by id
-  async getCollectionById(collecionId: string) {
-    return this.Collection.findOne({ _id: collecionId }).exec();
-  }
-
-  // Get collection by slug
-  async getCollectionBySlug(collectionSlug: string) {
-    return this.Collection.findOne({ slug: collectionSlug });
   }
 
   // Get collections by category

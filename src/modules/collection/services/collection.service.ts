@@ -10,8 +10,8 @@ class CollectionService {
     return CollectionDao.createCollection(userId, categoryId, resource);
   }
 
-  async list(limit: number, page: number) {
-    return CollectionDao.getAllCollections(limit, page);
+  async list() {
+    return CollectionDao.getAllCollections();
   }
 
   async listByCategory(
@@ -26,20 +26,16 @@ class CollectionService {
     );
   }
 
-  async readById(collectionId: string) {
-    return CollectionDao.getCollectionById(collectionId);
-  }
-
-  async readyBySlug(collectionSlug: string) {
-    return CollectionDao.getCollectionBySlug(collectionSlug);
-  }
-
   async readByIdOrSlug(collectionIdOrSlug: string) {
     return CollectionDao.getOneCollection(collectionIdOrSlug);
   }
 
   async remove(collectionId: string) {
     return CollectionDao.deleteCollection(collectionId);
+  }
+
+  async update(collectionId: string, resource: any) {
+    return CollectionDao.updateCollection(collectionId, resource);
   }
 }
 

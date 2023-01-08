@@ -13,8 +13,8 @@ class UsersService implements CRUD {
     return UsersDao.removeUserById(id);
   }
 
-  async list(limit: number, page: number) {
-    return UsersDao.getUsers(limit, page);
+  async list() {
+    return UsersDao.getUsers();
   }
 
   async patchById(id: string, resource: PatchUseDto): Promise<any> {

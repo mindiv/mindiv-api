@@ -13,12 +13,12 @@ class CategoryController {
       res,
       category,
       'Category created successfully',
-      ResponseCode.NO_CONTENT
+      ResponseCode.CREATED
     );
   }
 
   async getCategories(req: express.Request, res: express.Response) {
-    const categories = await categoryService.list(100, 0);
+    const categories = await categoryService.list();
     respond(res, categories);
   }
 
@@ -36,8 +36,8 @@ class CategoryController {
 
   async deleteCategory(req: express.Request, res: express.Response) {
     const categoryId = req.params.categoryIdOrSlug;
-    const category = await categoryService.delete(categoryId);
-    respond(res, category);
+    await categoryService.delete(categoryId);
+    respond(res, {}, '', ResponseCode.NO_CONTENT);
   }
 }
 

@@ -39,11 +39,8 @@ class CategoryDao {
     return category;
   }
 
-  async getCategories(limit = 25, page = 0) {
-    return this.Category.find()
-      .limit(limit)
-      .skip(limit * page)
-      .exec();
+  async getCategories() {
+    return this.Category.find().exec();
   }
 
   async getCategory(categoryIdOrSlug: string) {

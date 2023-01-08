@@ -7,8 +7,8 @@ class CategoryService {
     return CategoryDao.createCategory(userId, resource);
   }
 
-  async list(limit: number, page: number) {
-    return CategoryDao.getCategories(limit, page);
+  async list() {
+    return CategoryDao.getCategories();
   }
 
   async update(categoryId: string, categoryFields: UpdateCategoryDto) {

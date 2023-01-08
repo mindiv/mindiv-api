@@ -47,11 +47,9 @@ class UsersDao {
     return this.User.findOne({ _id: userId });
   }
 
-  async getUsers(limit = 25, page = 0) {
+  async getUsers() {
     return this.User.find()
-      .limit(limit)
-      .skip(limit * page)
-      .exec();
+    .exec();
   }
 
   async updateUserById(userId: string, userFields: PatchUseDto | PutUserDto) {

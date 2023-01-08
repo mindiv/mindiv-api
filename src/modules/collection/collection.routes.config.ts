@@ -28,11 +28,21 @@ export class CollectionRoutes extends CommonRoutesConfig {
       .route(`/api/collection/:collectionIdOrSlug`)
       .all(CollectionMiddleware.validateCollectionExists)
       .get(CollectionController.getOneCollection)
+      .put(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        ),
+        CollectionMiddleware.validateCollectionExists,
+        CollectionController.updateCollection
+      )
       .delete(
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
-        )
+        ),
+        CollectionMiddleware.validateCollectionExists,
+        CollectionController.deleteCollection
       );
 
     this.app
