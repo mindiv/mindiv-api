@@ -17,6 +17,7 @@ import { UsersRoutes } from './modules/users/users.routes.config';
 import { AuthRoutes } from './modules/auth/auth.routes.config';
 import { CategoryRoutes } from './modules/category/category.routes.config';
 import { CollectionRoutes } from './modules/collection/collection.routes.config';
+import { QuestionRoutes } from './modules/question/question.routes.config';
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -53,6 +54,7 @@ routes.push(new AuthRoutes(app));
 routes.push(new UsersRoutes(app));
 routes.push(new CategoryRoutes(app));
 routes.push(new CollectionRoutes(app));
+routes.push(new QuestionRoutes(app));
 
 // this is a simple route to mae sure everything is working properly
 const runningMessage = `Server running at http://localhost:${port}`;

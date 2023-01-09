@@ -1,4 +1,4 @@
-import expresss, { response } from 'express';
+import expresss from 'express';
 import categoryService from '../services/category.service';
 import debug from 'debug';
 import generateSlug from '../../../utilities/generateSlug';

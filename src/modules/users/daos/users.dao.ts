@@ -2,15 +2,12 @@ import { CreateUserDto } from '../dto/create.user.dto';
 import { PatchUseDto } from '../dto/patch.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
 import mongooseService from '../../common/services/mongoose.service';
-import shortid from 'shortid';
 import debug from 'debug';
 import { PermissionFlag } from '../../common/middleware/common.permissionflag.enum';
 
 const log: debug.IDebugger = debug('app:user-dao');
 
 class UsersDao {
-  users: Array<CreateUserDto> = [];
-
   Schema = mongooseService.getMongoose().Schema;
 
   userSchema = new this.Schema(
@@ -48,8 +45,7 @@ class UsersDao {
   }
 
   async getUsers() {
-    return this.User.find()
-    .exec();
+    return this.User.find().exec();
   }
 
   async updateUserById(userId: string, userFields: PatchUseDto | PutUserDto) {
