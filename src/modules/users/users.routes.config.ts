@@ -1,12 +1,13 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import UsersController from './controllers/users.controllers';
 import UsersMiddleware from './middleware/users.middleware';
-import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
-import { body } from 'express-validator';
 import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
+import validateResource from '../common/middleware/validate.resource.middleware';
+import { createUserSchema } from './schema/create.user.schema';
+import { updateUserSchema } from './schema/update.user.schema';
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -24,13 +25,7 @@ export class UsersRoutes extends CommonRoutesConfig {
         UsersController.listUsers
       )
       .post(
-        body('firstName').isString(),
-        body('lastName').isString(),
-        body('email').isEmail(),
-        body('password')
-          .isLength({ min: 5 })
-          .withMessage('Must include password (5+ characters)'),
-        BodyValidationMiddleware.verifyBodyFieldsError,
+        validateResource(createUserSchema),
         UsersMiddleware.validateSameEmailDoesntExist,
         UsersController.createUser
       );
@@ -40,46 +35,19 @@ export class UsersRoutes extends CommonRoutesConfig {
     this.app
       .route(`/api/users/:userId`)
       .all(
-        UsersMiddleware.validateUserExists,
         jwtMiddleware.validJWTNeeded,
+        UsersMiddleware.validateUserExists,
+        UsersMiddleware.validateUserSuspended,
         permissionMiddleware.onlySameUserOrAdminCanDoThisAction
       )
       .get(UsersController.getUserById)
-      .delete(UsersController.removeUser);
-
-    this.app.put(`/users/:userId`, [
-      body('email').isEmail(),
-      body('password')
-        .isLength({ min: 5 })
-        .withMessage('Must include password (5+ characters)'),
-      body('firstName').isString(),
-      body('lastName').isString(),
-      body('permissionFlags').isInt(),
-      BodyValidationMiddleware.verifyBodyFieldsError,
-      UsersMiddleware.validateSameEmailBelongToSameUser,
-      UsersMiddleware.userCantChangePermission,
-      permissionMiddleware.permissionFlagRequired(
-        PermissionFlag.PAID_PERMISSION
-      ),
-      UsersController.put,
-    ]);
-
-    this.app.patch(`/users/:userId`, [
-      body('email').isEmail(),
-      body('password')
-        .isLength({ min: 5 })
-        .withMessage('Must include password (5+ characters)'),
-      body('firstName').isString(),
-      body('lastName').isString(),
-      body('permissionFlags').isInt(),
-      BodyValidationMiddleware.verifyBodyFieldsError,
-      UsersMiddleware.validatePatchEmail,
-      UsersMiddleware.userCantChangePermission,
-      permissionMiddleware.permissionFlagRequired(
-        PermissionFlag.PAID_PERMISSION
-      ),
-      UsersController.patch,
-    ]);
+      .delete(UsersController.removeUser)
+      .put(
+        validateResource(updateUserSchema),
+        UsersMiddleware.validateSameEmailBelongToSameUser,
+        UsersMiddleware.userCantChangePermission,
+        UsersController.put
+      );
 
     return this.app;
   }

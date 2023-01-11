@@ -17,6 +17,7 @@ class UsersDao {
       firstName: String,
       lastName: String,
       permissionFlags: Number,
+      suspended: Boolean,
     },
     { timestamps: true }
   );
@@ -31,6 +32,7 @@ class UsersDao {
     const user = new this.User({
       ...userFields,
       permissionFlags: PermissionFlag.FREE_PERMISSION,
+      suspended: false,
     });
     await user.save();
     return user;

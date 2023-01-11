@@ -12,6 +12,10 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import debug from 'debug';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+import { options } from './docs/swaggerDef';
+
 import { CommonRoutesConfig } from './modules/common/common.routes.config';
 import { UsersRoutes } from './modules/users/users.routes.config';
 import { AuthRoutes } from './modules/auth/auth.routes.config';
@@ -25,10 +29,17 @@ const port = 8000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug('app');
 
+const specs = swaggerJsDoc(options);
+
 // middlewares
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
 // here we are preparing the expressWinston logging middleware configuration,
 // which will automatically log all HTTP requests handled by Express.js

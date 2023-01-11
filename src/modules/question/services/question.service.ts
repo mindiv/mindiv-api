@@ -14,8 +14,12 @@ class QuestionService {
     return QuestionDao.getOneQuestion(questionId);
   }
 
-  async update(questionId: string) {
-    //
+  async update(questionId: string, resource: CreateQuestionDto) {
+    return QuestionDao.updateQuestion(questionId, resource);
+  }
+
+  async delete(questionId: string) {
+    return QuestionDao.removeQuestion(questionId);
   }
 }
 
