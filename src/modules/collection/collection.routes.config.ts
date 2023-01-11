@@ -6,6 +6,8 @@ import { PermissionFlag } from '../common/middleware/common.permissionflag.enum'
 import CollectionController from './controllers/collection.controller';
 import CollectionMiddleware from './middleware/collection.middleware';
 import CategoryMiddleware from '../category/middleware/category.middleware';
+import validateResource from '../common/middleware/validate.resource.middleware';
+import { createCollectionSchema } from './schema/collection.schema';
 
 export class CollectionRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -21,6 +23,7 @@ export class CollectionRoutes extends CommonRoutesConfig {
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
         ),
+        validateResource(createCollectionSchema),
         CollectionController.createCollection
       );
 
@@ -33,6 +36,7 @@ export class CollectionRoutes extends CommonRoutesConfig {
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
         ),
+        validateResource(createCollectionSchema),
         CollectionMiddleware.validateCollectionExists,
         CollectionController.updateCollection
       )

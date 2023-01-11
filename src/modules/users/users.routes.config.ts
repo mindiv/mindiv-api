@@ -6,8 +6,7 @@ import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 import validateResource from '../common/middleware/validate.resource.middleware';
-import { createUserSchema } from './schema/create.user.schema';
-import { updateUserSchema } from './schema/update.user.schema';
+import { createUserSchema, updateUserSchema } from './schema/user.schema';
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {

@@ -5,8 +5,8 @@ import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
-import { body } from 'express-validator';
-import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
+import validateResource from '../common/middleware/validate.resource.middleware';
+import { createCategorySchema } from './schema/category.schema';
 
 export class CategoryRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -22,10 +22,7 @@ export class CategoryRoutes extends CommonRoutesConfig {
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
         ),
-        body('name').isString(),
-        body('description').isString(),
-        body('cover').isURL(),
-        BodyValidationMiddleware.verifyBodyFieldsError,
+        validateResource(createCategorySchema),
         CategoryMiddleware.validateSameCategoryDoesntExist,
         CategoryController.createCategory
       );
@@ -39,6 +36,7 @@ export class CategoryRoutes extends CommonRoutesConfig {
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
         ),
+        validateResource(createCategorySchema),
         CategoryController.updateCategory
       )
       .delete(
