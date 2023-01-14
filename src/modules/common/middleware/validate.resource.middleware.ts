@@ -11,6 +11,8 @@ const validateResource =
         query: req.query,
         params: req.params,
       });
+
+      next();
     } catch (error: any) {
       respond(res, error.errors, '', ResponseCode.BAD_REQUEST);
     }
