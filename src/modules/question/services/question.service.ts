@@ -10,6 +10,10 @@ class QuestionService {
     return QuestionDao.getAllQuestions();
   }
 
+  async listQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
+    return QuestionDao.getQuestionsToAnswer(numberOfQuestions, difficulty);
+  }
+
   async readById(questionId: string) {
     return QuestionDao.getOneQuestion(questionId);
   }

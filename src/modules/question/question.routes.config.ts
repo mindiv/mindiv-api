@@ -4,8 +4,6 @@ import express from 'express';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import permissionMiddleware from '../common/middleware/common.permission.middleware';
 import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
-import { body } from 'express-validator';
-import BodyValidationMiddleware from '../common/middleware/body.validation.middleware';
 import QuestionMiddleware from './middleware/question.middleware';
 import validateResource from '../common/middleware/validate.resource.middleware';
 import { createQuestionSchema } from './schema/question.schema';
@@ -27,6 +25,10 @@ export class QuestionRoutes extends CommonRoutesConfig {
         validateResource(createQuestionSchema),
         QuestionController.createQuestion
       );
+
+    this.app
+      .route('/api/questions_to_answer')
+      .get(QuestionController.getQuestionsToAnswer);
 
     this.app
       .route(`/api/question/:questionId`)
