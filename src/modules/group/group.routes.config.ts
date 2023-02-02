@@ -16,7 +16,6 @@ export class GroupRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/api/group`)
-      .get()
       .post(
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(

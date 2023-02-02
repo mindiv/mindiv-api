@@ -1,15 +1,13 @@
-import { object, string } from 'zod';
+import { z } from 'zod';
 
-export const createCategorySchema = object({
-  body: object({
-    name: string({
+export const createCategorySchema = z.object({
+  body: z.object({
+    name: z.string({
       required_error: 'Category name is required',
     }),
-    description: string({
+    cover: z.string(),
+    description: z.string({
       required_error: 'Category description is required',
     }),
-    cover: string({
-      required_error: 'Category cover is required',
-    }).url('Not a valid url'),
   }),
 });
