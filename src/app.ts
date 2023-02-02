@@ -21,6 +21,7 @@ import { UsersRoutes } from './modules/users/users.routes.config';
 import { AuthRoutes } from './modules/auth/auth.routes.config';
 import { CategoryRoutes } from './modules/category/category.routes.config';
 import { CollectionRoutes } from './modules/collection/collection.routes.config';
+import { GroupRoutes } from './modules/group/group.routes.config';
 import { QuestionRoutes } from './modules/question/question.routes.config';
 import { MiscRoutes } from './modules/misc/misc.routes.config';
 
@@ -66,6 +67,7 @@ routes.push(new AuthRoutes(app));
 routes.push(new UsersRoutes(app));
 routes.push(new CategoryRoutes(app));
 routes.push(new CollectionRoutes(app));
+routes.push(new GroupRoutes(app));
 routes.push(new QuestionRoutes(app));
 routes.push(new MiscRoutes(app));
 

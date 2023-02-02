@@ -51,6 +51,15 @@ class GroupDao {
     await group.save();
     return group;
   }
+
+  async getGroup(groupIdOrSlug: string) {
+    // check if idOrSlug is a valid MongoDB ObjectId
+    if (mongooseService.getMongoose().Types.ObjectId.isValid(groupIdOrSlug)) {
+      return this.Group.findOne({ _id: groupIdOrSlug }).exec();
+    } else {
+      return this.Group.findOne({ slug: groupIdOrSlug }).exec();
+    }
+  }
 }
 
 export default new GroupDao();
