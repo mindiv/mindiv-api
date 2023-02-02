@@ -34,6 +34,7 @@ class QuestionDao {
       user: { type: this.Schema.Types.ObjectId, ref: 'User' },
       categoryId: { type: this.Schema.Types.ObjectId, ref: 'Category' },
       collectionId: { type: this.Schema.Types.ObjectId, ref: 'Collection' },
+      group: { type: this.Schema.Types.ObjectId, ref: 'Group' },
     },
     { timestamps: true }
   );
