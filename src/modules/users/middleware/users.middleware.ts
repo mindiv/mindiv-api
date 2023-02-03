@@ -74,6 +74,20 @@ class UsersMiddleware {
     }
   }
 
+  async validateUserSuspended(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    if (res.locals.user.suspended) {
+      res.status(403).send({
+        error: [`User with Id: ${req.params.userId} suspended`],
+      });
+    } else {
+      next();
+    }
+  }
+
   async extractUserId(
     req: express.Request,
     res: express.Response,

@@ -23,14 +23,18 @@ class QuestionDao {
         type: Number,
         required: true,
       },
+      description: {
+        type: String,
+      },
       difficulty: {
         type: String,
-        enum: ['Easy', 'Medium', 'Hard'],
+        enum: ['easy', 'medium', 'hard'],
         required: true,
       },
       user: { type: this.Schema.Types.ObjectId, ref: 'User' },
       categoryId: { type: this.Schema.Types.ObjectId, ref: 'Category' },
       collectionId: { type: this.Schema.Types.ObjectId, ref: 'Collection' },
+      group: { type: this.Schema.Types.ObjectId, ref: 'Group' },
     },
     { timestamps: true }
   );
@@ -56,6 +60,13 @@ class QuestionDao {
   // Get all questions
   async getAllQuestions() {
     return this.Question.find().exec();
+  }
+
+  async getQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
+    const questions = await this.Question.find({ difficulty })
+      .limit(numberOfQuestions)
+      .exec();
+    return questions;
   }
 
   // Get one question

@@ -17,6 +17,17 @@ class QuestionController {
     respond(res, questions);
   }
 
+  async getQuestionsToAnswer(req: express.Request, res: express.Response) {
+    const numberOfQuestions = req.query.noq || 10;
+    const difficulty = req.query.diff || 'easy';
+
+    const questions = await questionService.listQuestionsToAnswer(
+      numberOfQuestions,
+      difficulty
+    );
+    respond(res, questions);
+  }
+
   async getOneQuestion(req: express.Request, res: express.Response) {
     const questionId = req.params.questionId;
     const question = await questionService.readById(questionId);

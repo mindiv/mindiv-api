@@ -26,14 +26,18 @@ class CategoryMiddleware {
     res: expresss.Response,
     next: expresss.NextFunction
   ) {
-    const category = await categoryService.readByIdOrSlug(
-      req.params.categoryIdOrSlug
-    );
+    try {
+      const category = await categoryService.readByIdOrSlug(
+        req.params.categoryIdOrSlug
+      );
 
-    if (category) {
-      res.locals.category = category;
-      next();
-    } else {
+      if (category) {
+        res.locals.category = category;
+        next();
+      } else {
+        respond(res, {}, 'No category found', ResponseCode.NOT_FOUND);
+      }
+    } catch (error) {
       respond(res, {}, 'No category found', ResponseCode.NOT_FOUND);
     }
   }

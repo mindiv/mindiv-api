@@ -10,12 +10,20 @@ class QuestionService {
     return QuestionDao.getAllQuestions();
   }
 
+  async listQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
+    return QuestionDao.getQuestionsToAnswer(numberOfQuestions, difficulty);
+  }
+
   async readById(questionId: string) {
     return QuestionDao.getOneQuestion(questionId);
   }
 
-  async update(questionId: string) {
-    //
+  async update(questionId: string, resource: CreateQuestionDto) {
+    return QuestionDao.updateQuestion(questionId, resource);
+  }
+
+  async delete(questionId: string) {
+    return QuestionDao.removeQuestion(questionId);
   }
 }
 
