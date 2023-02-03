@@ -22,6 +22,20 @@ class GroupController {
     const group = await GroupService.readByIdOrSlug(groupIdOrSlug);
     respond(res, group);
   }
+
+  async updateGroup(req: express.Request, res: express.Response) {
+    const groupId = req.params.groupIdOrSlug;
+    const group = await GroupService.update(groupId, req.body);
+    const message = 'Group updated successfully';
+    respond(res, group, message);
+  }
+
+  async deleteGroup(req: express.Request, res: express.Response) {
+    const groupId = req.params.groupIdOrSlug;
+    const group = await GroupService.delete(groupId);
+    const message = 'Group deleted successfully';
+    respond(res, group, message);
+  }
 }
 
 export default new GroupController();

@@ -20,6 +20,23 @@ class GroupMiddleware {
       next();
     }
   }
+
+  async validateGroupExists(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    const group = await GroupService.readByIdOrSlug(
+      req.params.collectionIdOrSlug
+    );
+
+    if (group) {
+      res.locals.group = group;
+      next();
+    } else {
+      respond(res, {}, 'No Group found', ResponseCode.BAD_REQUEST);
+    }
+  }
 }
 
 export default new GroupMiddleware();

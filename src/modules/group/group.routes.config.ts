@@ -26,6 +26,26 @@ export class GroupRoutes extends CommonRoutesConfig {
         GroupMiddleware.validateSameGroupDoesntExist,
         GroupController.createGroup
       );
+
+    this.app
+      .route(`/api/group/:groupIdOrSlug`)
+      .all(GroupMiddleware.validateGroupExists)
+      .get(GroupController.getGroup)
+      .put(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        ),
+        validateResource(createGroupSchema),
+        GroupController.updateGroup
+      )
+      .delete(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        ),
+        GroupController.deleteGroup
+      );
     return this.app;
   }
 }

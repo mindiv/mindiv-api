@@ -13,6 +13,14 @@ class GroupService {
   async readByIdOrSlug(groupdIdOrSlug: string) {
     return GroupDao.getGroup(groupdIdOrSlug);
   }
+
+  async update(groupId: string, resource: CreateGroupDto) {
+    return GroupDao.updateGroup(groupId, resource);
+  }
+
+  async delete(groupId: string) {
+    return GroupDao.removeGroup(groupId);
+  }
 }
 
 export default new GroupService();

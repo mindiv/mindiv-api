@@ -37,7 +37,6 @@ export class CollectionRoutes extends CommonRoutesConfig {
           PermissionFlag.ADMIN_PERMISSION
         ),
         validateResource(createCollectionSchema),
-        CollectionMiddleware.validateCollectionExists,
         CollectionController.updateCollection
       )
       .delete(
@@ -45,7 +44,6 @@ export class CollectionRoutes extends CommonRoutesConfig {
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION
         ),
-        CollectionMiddleware.validateCollectionExists,
         CollectionController.deleteCollection
       );
 
