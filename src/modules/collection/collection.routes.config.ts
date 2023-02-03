@@ -24,6 +24,7 @@ export class CollectionRoutes extends CommonRoutesConfig {
           PermissionFlag.ADMIN_PERMISSION
         ),
         validateResource(createCollectionSchema),
+        CollectionMiddleware.validateSameCollectionDoesntExist,
         CollectionController.createCollection
       );
 

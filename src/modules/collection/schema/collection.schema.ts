@@ -10,6 +10,6 @@ export const createCollectionSchema = object({
     }),
     cover: string({
       required_error: 'Cover is required',
-    }).url('Not a valid url'),
+    }),
   }),
 });

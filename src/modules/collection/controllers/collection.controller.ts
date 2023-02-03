@@ -15,7 +15,7 @@ class CollectionController {
       req.body
     );
     const message = 'Collection created successfully';
-    respond(res, collection, message, ResponseCode.NO_CONTENT);
+    respond(res, collection, message, ResponseCode.CREATED);
   }
 
   async getAllCollections(req: express.Request, res: express.Response) {
