@@ -12,6 +12,11 @@ class GroupController {
     respond(res, group, 'Group created successfully', ResponseCode.CREATED);
   }
 
+  async getGroups(req: express.Request, res: express.Response) {
+    const groups = await GroupService.list();
+    respond(res, groups);
+  }
+
   async getGroup(req: express.Request, res: express.Response) {
     const groupIdOrSlug = req.params.groupIdOrSlug;
     const group = await GroupService.readByIdOrSlug(groupIdOrSlug);

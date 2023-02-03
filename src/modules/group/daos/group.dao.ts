@@ -52,6 +52,10 @@ class GroupDao {
     return group;
   }
 
+  async getGroups() {
+    return this.Group.find().exec();
+  }
+
   async getGroup(groupIdOrSlug: string) {
     // check if idOrSlug is a valid MongoDB ObjectId
     if (mongooseService.getMongoose().Types.ObjectId.isValid(groupIdOrSlug)) {

@@ -6,6 +6,10 @@ class GroupService {
     return GroupDao.createGroup(userId, resource);
   }
 
+  async list() {
+    return GroupDao.getGroups();
+  }
+
   async readByIdOrSlug(groupdIdOrSlug: string) {
     return GroupDao.getGroup(groupdIdOrSlug);
   }
