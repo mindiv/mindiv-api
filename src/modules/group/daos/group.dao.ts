@@ -64,6 +64,28 @@ class GroupDao {
       return this.Group.findOne({ slug: groupIdOrSlug }).exec();
     }
   }
+
+  async updateGroup(groupId: string, groupFields: CreateGroupDto) {
+    try {
+      const exitingGroup = await this.Group.findOneAndUpdate(
+        { _id: groupId },
+        { $set: groupFields },
+        { new: true }
+      ).exec();
+
+      return exitingGroup;
+    } catch (error) {
+      console.log('Error');
+    }
+  }
+
+  async removeGroup(groupId: string) {
+    try {
+      return this.Group.deleteOne({ _id: groupId });
+    } catch (error) {
+      console.error('Error');
+    }
+  }
 }
 
 export default new GroupDao();
