@@ -32,9 +32,7 @@ class QuestionDao {
         required: true,
       },
       user: { type: this.Schema.Types.ObjectId, ref: 'User' },
-      categoryId: { type: this.Schema.Types.ObjectId, ref: 'Category' },
-      collectionId: { type: this.Schema.Types.ObjectId, ref: 'Collection' },
-      group: { type: this.Schema.Types.ObjectId, ref: 'Group' },
+      category: { type: this.Schema.Types.ObjectId, ref: 'Category' },
     },
     { timestamps: true }
   );

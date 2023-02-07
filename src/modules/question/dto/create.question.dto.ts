@@ -6,7 +6,6 @@ export interface CreateQuestionDto {
   question: string;
   options: string[];
   correctionOption: string;
-  categoryId: MongooseObjectId;
-  collectionId: MongooseObjectId;
-  difficulty: string;
+  category: MongooseObjectId;
+  difficulty: 'easy' | 'medium' | 'hard';
 }
