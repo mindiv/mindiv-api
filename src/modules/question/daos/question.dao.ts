@@ -19,8 +19,8 @@ class QuestionDao {
           required: true,
         },
       ],
-      correctOption: {
-        type: Number,
+      answer: {
+        type: String,
         required: true,
       },
       description: {
