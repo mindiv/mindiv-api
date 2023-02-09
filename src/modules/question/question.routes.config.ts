@@ -16,7 +16,7 @@ export class QuestionRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/api/question`)
-      .get(QuestionController.getAllQuestion)
+      .get(QuestionController.getQuestions)
       .post(
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(

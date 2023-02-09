@@ -56,8 +56,26 @@ class QuestionDao {
   }
 
   // Get all questions
-  async getAllQuestions() {
-    return this.Question.find().exec();
+  async getQuestions(page: number, limit = 20) {
+    const skip = (page - 1) * limit;
+
+    const questions = await this.Question.find({})
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    const total = await this.Question.countDocuments({}).exec();
+    const pageCount = Math.ceil(total / limit);
+
+    return {
+      questions,
+      pageInfo: {
+        currentPage: page,
+        limit,
+        pageCount,
+        total,
+      },
+    };
   }
 
   async getQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {

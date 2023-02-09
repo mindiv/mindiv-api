@@ -12,8 +12,10 @@ class QuestionController {
     respond(res, question, 'Question created', ResponseCode.CREATED);
   }
 
-  async getAllQuestion(req: express.Request, res: express.Response) {
-    const questions = await questionService.list();
+  async getQuestions(req: express.Request, res: express.Response) {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const questions = await questionService.list(page, limit);
     respond(res, questions);
   }
 

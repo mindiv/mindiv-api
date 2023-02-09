@@ -1,19 +1,19 @@
 import express from 'express';
 import { respond } from '../../../utilities/response/response';
-import categoryService from '../../category/services/category.service';
-import questionService from '../../question/services/question.service';
-import usersService from '../../users/services/users.service';
+import CategoryDao from '../../category/daos/category.dao';
+import QuestionDao from '../../question/daos/question.dao';
+import UsersDao from '../../users/daos/users.dao';
 
 class MiscController {
   async getStats(req: express.Request, res: express.Response) {
-    const categories = await categoryService.list();
-    const questions = await questionService.list();
-    const users = await usersService.list();
+    const categories = await CategoryDao.Category.countDocuments({}).exec();
+    const questions = await QuestionDao.Question.countDocuments({}).exec();
+    const users = await UsersDao.User.countDocuments({}).exec();
 
     const payload = {
-      categories: categories.length,
-      questions: questions.length,
-      users: users.length,
+      categories,
+      questions,
+      users,
     };
 
     respond(res, payload);
