@@ -35,6 +35,12 @@ class QuestionController {
     const question = await questionService.readById(questionId);
     respond(res, question);
   }
+
+  async updateQuestion(req: express.Request, res: express.Response) {
+    const questionId = req.params.questionId;
+    const question = await questionService.update(questionId, req.body);
+    respond(res, question, 'Question updated');
+  }
 }
 
 export default new QuestionController();

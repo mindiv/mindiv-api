@@ -20,7 +20,7 @@ class QuestionDao {
         },
       ],
       answer: {
-        type: String,
+        type: Number,
         required: true,
       },
       description: {

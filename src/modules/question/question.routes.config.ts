@@ -33,7 +33,8 @@ export class QuestionRoutes extends CommonRoutesConfig {
     this.app
       .route(`/api/question/:questionId`)
       .all(QuestionMiddleware.validateQuestionExists)
-      .get(QuestionController.getOneQuestion);
+      .get(QuestionController.getOneQuestion)
+      .put(QuestionController.updateQuestion);
     return this.app;
   }
 }
