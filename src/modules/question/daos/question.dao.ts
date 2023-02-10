@@ -19,8 +19,12 @@ class QuestionDao {
           required: true,
         },
       ],
-      answer: {
+      correctOption: {
         type: Number,
+        required: true,
+      },
+      answer: {
+        type: String,
         required: true,
       },
       description: {
@@ -47,9 +51,13 @@ class QuestionDao {
 
   // Create a question
   async createQuestion(userId: string, questionFields: CreateQuestionDto) {
+    const { options, correctOption } = questionFields;
+    const answer = options[correctOption];
+
     const question = new this.Question({
       user: userId,
       ...questionFields,
+      answer,
     });
     await question.save();
     return question;
@@ -92,10 +100,12 @@ class QuestionDao {
 
   // Update question
   async updateQuestion(questionId: string, questionFields: CreateQuestionDto) {
+    const { options, correctOption } = questionFields;
+    const answer = options[correctOption];
     try {
       const existingQuestion = await this.Question.findOneAndUpdate(
         { _id: questionId },
-        { $set: questionFields },
+        { $set: { ...questionFields, answer } },
         { new: true }
       ).exec();
 
