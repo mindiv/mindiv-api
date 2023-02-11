@@ -38,6 +38,7 @@ export class QuestionRoutes extends CommonRoutesConfig {
     this.app
       .route(`/api/question/:questionId`)
       .all(
+        QuestionMiddleware.validateQuestionExists,
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
           PermissionFlag.ADMIN_PERMISSION

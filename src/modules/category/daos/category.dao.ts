@@ -98,7 +98,7 @@ class CategoryDao {
     }
   }
 
-  async removeCategory(categoryId: string) {
+  async deleteCategory(categoryId: string) {
     try {
       return this.Category.deleteOne({ _id: categoryId }).exec();
     } catch (error) {
