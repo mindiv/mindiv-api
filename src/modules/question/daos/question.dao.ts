@@ -115,8 +115,8 @@ class QuestionDao {
     }
   }
 
-  // Remove question
-  async removeQuestion(questionId: string) {
+  // Delete question
+  async deleteQuestion(questionId: string) {
     try {
       return this.Question.deleteOne({ _id: questionId });
     } catch (error) {

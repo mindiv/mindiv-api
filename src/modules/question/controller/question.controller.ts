@@ -41,6 +41,12 @@ class QuestionController {
     const question = await questionService.update(questionId, req.body);
     respond(res, question, 'Question updated');
   }
+
+  async deleteQuestion(req: express.Request, res: express.Response) {
+    const questionId = req.params.questionId;
+    const question = await questionService.delete(questionId);
+    respond(res, question, 'Question deleted');
+  }
 }
 
 export default new QuestionController();

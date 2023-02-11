@@ -23,7 +23,7 @@ class QuestionService {
   }
 
   async delete(questionId: string) {
-    return QuestionDao.removeQuestion(questionId);
+    return QuestionDao.deleteQuestion(questionId);
   }
 }
 

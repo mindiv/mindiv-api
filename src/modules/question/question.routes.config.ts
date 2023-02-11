@@ -33,8 +33,18 @@ export class QuestionRoutes extends CommonRoutesConfig {
     this.app
       .route(`/api/question/:questionId`)
       .all(QuestionMiddleware.validateQuestionExists)
-      .get(QuestionController.getOneQuestion)
-      .put(QuestionController.updateQuestion);
+      .get(QuestionController.getOneQuestion);
+
+    this.app
+      .route(`/api/question/:questionId`)
+      .all(
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        )
+      )
+      .put(QuestionController.updateQuestion)
+      .delete(QuestionController.deleteQuestion);
     return this.app;
   }
 }
