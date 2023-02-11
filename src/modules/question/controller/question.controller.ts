@@ -12,8 +12,10 @@ class QuestionController {
     respond(res, question, 'Question created', ResponseCode.CREATED);
   }
 
-  async getAllQuestion(req: express.Request, res: express.Response) {
-    const questions = await questionService.list();
+  async getQuestions(req: express.Request, res: express.Response) {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 20;
+    const questions = await questionService.list(page, limit);
     respond(res, questions);
   }
 
@@ -32,6 +34,18 @@ class QuestionController {
     const questionId = req.params.questionId;
     const question = await questionService.readById(questionId);
     respond(res, question);
+  }
+
+  async updateQuestion(req: express.Request, res: express.Response) {
+    const questionId = req.params.questionId;
+    const question = await questionService.update(questionId, req.body);
+    respond(res, question, 'Question updated');
+  }
+
+  async deleteQuestion(req: express.Request, res: express.Response) {
+    const questionId = req.params.questionId;
+    await questionService.delete(questionId);
+    respond(res, {}, 'Question deleted');
   }
 }
 

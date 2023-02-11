@@ -6,8 +6,8 @@ class QuestionService {
     return QuestionDao.createQuestion(userId, resource);
   }
 
-  async list() {
-    return QuestionDao.getAllQuestions();
+  async list(page: number, limit: number) {
+    return QuestionDao.getQuestions(page, limit);
   }
 
   async listQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
@@ -23,7 +23,7 @@ class QuestionService {
   }
 
   async delete(questionId: string) {
-    return QuestionDao.removeQuestion(questionId);
+    return QuestionDao.deleteQuestion(questionId);
   }
 }
 

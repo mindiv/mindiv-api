@@ -23,6 +23,10 @@ class QuestionDao {
         type: Number,
         required: true,
       },
+      answer: {
+        type: String,
+        required: true,
+      },
       description: {
         type: String,
       },
@@ -32,9 +36,7 @@ class QuestionDao {
         required: true,
       },
       user: { type: this.Schema.Types.ObjectId, ref: 'User' },
-      categoryId: { type: this.Schema.Types.ObjectId, ref: 'Category' },
-      collectionId: { type: this.Schema.Types.ObjectId, ref: 'Collection' },
-      group: { type: this.Schema.Types.ObjectId, ref: 'Group' },
+      category: { type: this.Schema.Types.ObjectId, ref: 'Category' },
     },
     { timestamps: true }
   );
@@ -49,17 +51,39 @@ class QuestionDao {
 
   // Create a question
   async createQuestion(userId: string, questionFields: CreateQuestionDto) {
+    const { options, correctOption } = questionFields;
+    const answer = options[correctOption];
+
     const question = new this.Question({
       user: userId,
       ...questionFields,
+      answer,
     });
     await question.save();
     return question;
   }
 
   // Get all questions
-  async getAllQuestions() {
-    return this.Question.find().exec();
+  async getQuestions(page: number, limit = 20) {
+    const skip = (page - 1) * limit;
+
+    const questions = await this.Question.find({})
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    const total = await this.Question.countDocuments({}).exec();
+    const pageCount = Math.ceil(total / limit);
+
+    return {
+      questions,
+      pageInfo: {
+        currentPage: page,
+        limit,
+        pageCount,
+        total,
+      },
+    };
   }
 
   async getQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
@@ -76,10 +100,12 @@ class QuestionDao {
 
   // Update question
   async updateQuestion(questionId: string, questionFields: CreateQuestionDto) {
+    const { options, correctOption } = questionFields;
+    const answer = options[correctOption];
     try {
       const existingQuestion = await this.Question.findOneAndUpdate(
         { _id: questionId },
-        { $set: questionFields },
+        { $set: { ...questionFields, answer } },
         { new: true }
       ).exec();
 
@@ -89,8 +115,8 @@ class QuestionDao {
     }
   }
 
-  // Remove question
-  async removeQuestion(questionId: string) {
+  // Delete question
+  async deleteQuestion(questionId: string) {
     try {
       return this.Question.deleteOne({ _id: questionId });
     } catch (error) {

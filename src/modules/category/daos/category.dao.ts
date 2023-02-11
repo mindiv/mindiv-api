@@ -54,7 +54,22 @@ class CategoryDao {
   }
 
   async getCategories() {
-    return this.Category.find().exec();
+    const categories = await this.Category.aggregate([
+      {
+        $lookup: {
+          from: 'questions',
+          localField: '_id',
+          foreignField: 'category',
+          as: 'questions',
+        },
+      },
+      {
+        $addFields: {
+          questionCount: { $size: '$questions' },
+        },
+      },
+    ]);
+    return categories;
   }
 
   async getCategory(categoryIdOrSlug: string) {
@@ -83,7 +98,7 @@ class CategoryDao {
     }
   }
 
-  async removeCategory(categoryId: string) {
+  async deleteCategory(categoryId: string) {
     try {
       return this.Category.deleteOne({ _id: categoryId }).exec();
     } catch (error) {

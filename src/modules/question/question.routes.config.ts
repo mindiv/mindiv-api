@@ -16,7 +16,7 @@ export class QuestionRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/api/question`)
-      .get(QuestionController.getAllQuestion)
+      .get(QuestionController.getQuestions)
       .post(
         jwtMiddleware.validJWTNeeded,
         permissionMiddleware.permissionFlagRequired(
@@ -34,6 +34,18 @@ export class QuestionRoutes extends CommonRoutesConfig {
       .route(`/api/question/:questionId`)
       .all(QuestionMiddleware.validateQuestionExists)
       .get(QuestionController.getOneQuestion);
+
+    this.app
+      .route(`/api/question/:questionId`)
+      .all(
+        QuestionMiddleware.validateQuestionExists,
+        jwtMiddleware.validJWTNeeded,
+        permissionMiddleware.permissionFlagRequired(
+          PermissionFlag.ADMIN_PERMISSION
+        )
+      )
+      .put(QuestionController.updateQuestion)
+      .delete(QuestionController.deleteQuestion);
     return this.app;
   }
 }

@@ -9,12 +9,7 @@ class CategoryController {
   async createCategory(req: express.Request, res: express.Response) {
     const userId = res.locals.jwt.userId;
     const category = await categoryService.create(userId, req.body);
-    respond(
-      res,
-      category,
-      'Category created successfully',
-      ResponseCode.CREATED
-    );
+    respond(res, category, 'Category created', ResponseCode.CREATED);
   }
 
   async getCategories(req: express.Request, res: express.Response) {
@@ -37,7 +32,7 @@ class CategoryController {
   async deleteCategory(req: express.Request, res: express.Response) {
     const categoryId = req.params.categoryIdOrSlug;
     await categoryService.delete(categoryId);
-    respond(res, {}, '', ResponseCode.NO_CONTENT);
+    respond(res, {}, 'Category deleted');
   }
 }
 

@@ -20,7 +20,7 @@ class CategoryService {
   }
 
   async delete(categoryId: string) {
-    return CategoryDao.removeCategory(categoryId);
+    return CategoryDao.deleteCategory(categoryId);
   }
 }
 

@@ -12,11 +12,10 @@ export const createQuestionSchema = z.object({
         })
       )
       .length(4, { message: 'Max 4 options' }),
-    collectionOption: z.string({
-      required_error: '',
+    correctOption: z.number({
+      required_error: 'Correct option is required',
     }),
-    categoryId: z.string(),
-    collectionId: z.string(),
-    difficulty: z.string(),
+    category: z.string(),
+    difficulty: z.enum(['easy', 'medium', 'hard']),
   }),
 });
