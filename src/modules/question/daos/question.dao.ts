@@ -1,6 +1,9 @@
 import mongooseService from '../../common/services/mongoose.service';
 import debug from 'debug';
 import { CreateQuestionDto } from '../dto/create.question.dto';
+import { any, number } from 'zod';
+import mongoose from 'mongoose';
+import { ObjectId, ObjectIdLike } from 'bson';
 
 const log: debug.IDebugger = debug('app:question-dao');
 
@@ -86,10 +89,28 @@ class QuestionDao {
     };
   }
 
-  async getQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
-    const questions = await this.Question.find({ difficulty })
-      .limit(numberOfQuestions)
-      .exec();
+  async getQuestionsToAnswer(
+    numberOfQuestions: any,
+    difficulty: any,
+    categories: any
+  ) {
+    const query: any = {};
+
+    if (categories.length > 0 && categories[0] !== 'all') {
+      query.category = {
+        $in: categories.map((id: any) => new mongoose.Types.ObjectId(id)),
+      };
+    }
+
+    if (difficulty !== 'all') {
+      query.difficulty = difficulty;
+    }
+
+    const questions = await this.Question.aggregate([
+      { $match: query },
+      { $sample: { size: numberOfQuestions } },
+    ]).exec();
+
     return questions;
   }
 

@@ -20,12 +20,14 @@ class QuestionController {
   }
 
   async getQuestionsToAnswer(req: express.Request, res: express.Response) {
-    const numberOfQuestions = req.query.noq || 10;
-    const difficulty = req.query.diff || 'easy';
+    const numberOfQuestions = Number(req.query.numberOfQuestions) || 10;
+    const difficulty = req.query.difficulty || 'easy';
+    const categories = req.query.categories || [];
 
     const questions = await questionService.listQuestionsToAnswer(
       numberOfQuestions,
-      difficulty
+      difficulty,
+      categories
     );
     respond(res, questions);
   }
