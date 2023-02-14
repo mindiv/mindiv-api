@@ -1,7 +1,9 @@
 import mongooseService from '../../common/services/mongoose.service';
 import debug from 'debug';
 import { CreateQuestionDto } from '../dto/create.question.dto';
-import { any } from 'zod';
+import { any, number } from 'zod';
+import mongoose from 'mongoose';
+import { ObjectId, ObjectIdLike } from 'bson';
 
 const log: debug.IDebugger = debug('app:question-dao');
 
@@ -92,23 +94,24 @@ class QuestionDao {
     difficulty: any,
     categories: any
   ) {
-    const count = await this.Question.countDocuments();
-    const randomIndexes = [...Array(numberOfQuestions)].map(() =>
-      Math.floor(Math.random() * count)
-    );
     const query: any = {};
 
-    if (categories.length > 0) {
-      query.category = { $in: categories };
+    if (categories.length > 0 && categories[0] !== 'all') {
+      query.category = {
+        $in: categories.map((id: any) => new mongoose.Types.ObjectId(id)),
+      };
     }
 
     if (difficulty !== 'all') {
       query.difficulty = difficulty;
     }
 
-    const questions = await this.Question.find(query);
-    const randomizedQuestions = randomIndexes.map((index) => questions[index]);
-    return randomizedQuestions;
+    const questions = await this.Question.aggregate([
+      { $match: query },
+      { $sample: { size: numberOfQuestions } },
+    ]).exec();
+
+    return questions;
   }
 
   // Get one question

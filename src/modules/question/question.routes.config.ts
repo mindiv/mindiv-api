@@ -27,7 +27,7 @@ export class QuestionRoutes extends CommonRoutesConfig {
       );
 
     this.app
-      .route('/api/question/questions_to_answer/:category/:difficulty/:count')
+      .route('/api/question/questions_to_answer')
       .get(QuestionController.getQuestionsToAnswer);
 
     this.app
