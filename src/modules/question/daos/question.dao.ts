@@ -1,6 +1,7 @@
 import mongooseService from '../../common/services/mongoose.service';
 import debug from 'debug';
 import { CreateQuestionDto } from '../dto/create.question.dto';
+import { any } from 'zod';
 
 const log: debug.IDebugger = debug('app:question-dao');
 
@@ -86,11 +87,28 @@ class QuestionDao {
     };
   }
 
-  async getQuestionsToAnswer(numberOfQuestions: any, difficulty: any) {
-    const questions = await this.Question.find({ difficulty })
-      .limit(numberOfQuestions)
-      .exec();
-    return questions;
+  async getQuestionsToAnswer(
+    numberOfQuestions: any,
+    difficulty: any,
+    categories: any
+  ) {
+    const count = await this.Question.countDocuments();
+    const randomIndexes = [...Array(numberOfQuestions)].map(() =>
+      Math.floor(Math.random() * count)
+    );
+    const query: any = {};
+
+    if (categories.length > 0) {
+      query.category = { $in: categories };
+    }
+
+    if (difficulty !== 'all') {
+      query.difficulty = difficulty;
+    }
+
+    const questions = await this.Question.find(query);
+    const randomizedQuestions = randomIndexes.map((index) => questions[index]);
+    return randomizedQuestions;
   }
 
   // Get one question
