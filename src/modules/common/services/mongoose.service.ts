@@ -3,9 +3,15 @@ import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 
+// @ts-expect-error
+const mongoUriLocal: string = process.env.MONGO_URI_LOCAL;
+// @ts-expect-error
+const mongoUri: string = process.env.MONGO_URI;
+
 class MongooseService {
   private count = 0;
   private mongooseOptions = {};
+  private dev = process.env.DEV === 'development';
 
   constructor() {
     this.connectWithRetry();
@@ -19,10 +25,7 @@ class MongooseService {
     log('Attempting MongoDB connection (will retry if needed)');
     mongoose.set('strictQuery', false);
     mongoose
-      .connect(
-        'mongodb://localhost:27017/ripple-trivia-db',
-        this.mongooseOptions
-      )
+      .connect(mongoUri, this.mongooseOptions)
       .then(() => {
         log('MongoDB is connected');
       })
